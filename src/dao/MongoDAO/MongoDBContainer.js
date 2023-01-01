@@ -1,10 +1,7 @@
-import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
 
 export default class MongoDBContainer {
-    constructor(collection,schema) {
-        //mongoose.connect('mongodb+srv://leopanigo:Mongo2.0@clusterdeprueba.ozm98v9.mongodb.net/segundaEntrega?retryWrites=true&w=majority');
-        this.model = mongoose.model(collection,schema);
+    constructor(model) {
+        this.model = model;
     }
 
     getAll = async() => {
@@ -13,7 +10,7 @@ export default class MongoDBContainer {
     }
 
     getById = async(_id) => {
-        let result = await this.model.findById(_id);
+        let result = await this.model.findById(_id).lean();
         return result;
     }
 

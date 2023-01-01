@@ -11,7 +11,6 @@ router.post('/register', passport.authenticate('register', {session:false}), asy
 })
 
 router.post('/login', passport.authenticate('login', {session:false}), async (req, res) => {
-    console.log(req.user);
     const loginUser = {
         role: req.user.role,
         email: req.user.email,
@@ -24,7 +23,7 @@ router.post('/login', passport.authenticate('login', {session:false}), async (re
 router.get('/current', async (req, res) => {
     try {
         const token = req.cookies[config.jwt.COOKIE];
-        if(!token) return res.redirect('/'); //checkeo si exite la cookie. Pero el token puede expirar aun con la cookie activa.
+        if(!token) return res.redirect('/login'); //checkeo si exite la cookie. Pero el token puede expirar aun con la cookie activa.
         const user = jwt.verify(token, config.jwt.SECRET);
         res.send({status:"Success", user});
     } catch (error) {

@@ -1,24 +1,27 @@
-import mongoose from "mongoose";
+import cartModel from '../models/cart.dao.js'
 import MongoDBContainer from "./MongoDBContainer.js";
 
-const collection = 'carts'
-const productsSchema = mongoose.Schema({
-    name:String,
-    products:
-    {
-        type: Array,
-        default: []
-    },
-    price:{
-        type:Number,
-        default:0
-    }
-    
-})
+
 
 export default class Carts extends MongoDBContainer{
     constructor() {
-        super(collection,productsSchema);
+        super(cartModel);
+    }
+
+    getByIdAndPopulate = async (id) => {
+        let result = await this.model.findOne({_id:id}).lean().populate('products.product')
+        return result;
+    }
+
+    save = async() => {
+        let result = this.model.create({products:[]});
+        return result;
+    }
+
+    update = async(id, cart) => {
+        let result = await this.model.findByIdAndUpdate(id, {$set:{products:cart.products}})
+        //agregar funcion restock si se reduce
+        return result;
     }
 
     addProductById = async(cid, pid, pQuantity) => {

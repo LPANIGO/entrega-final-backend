@@ -1,8 +1,8 @@
 import passport from 'passport';
 import local from 'passport-local';
-import userService from '../dao/models/User.js';
+import userService from '../dao/models/user.dao.js';
+import services from '../dao/index.js';
 import { creatHash, isValidPassword } from '../utils.js';
-import GoogleStrategy from 'passport-google-oauth20';
 
 const LocalStrategy = local.Strategy;
 
@@ -10,14 +10,21 @@ const initializeCustomPassport = () => {
     passport.use('register', new LocalStrategy({passReqToCallback:true, usernameField:"email", session:false}, 
     async(req, email, password, done) => {
         try {
-            const {name} = req.body;
-            if (!name || !email || !password) return done(null, false, {message:"Incomplete values"});
+            const {first_name, last_name, age, phone} = req.body;
+            if (!first_name || !email || !password) return done(null, false, {message:"Incomplete values"});
             const exists = await userService.findOne({email:email});
             if(exists) return done(null, false, {message:"User already exists"});
+            //Anexar carrito
+            const cart = await services.cartsService.save();
+            console.log(cart);
             const newUser = {
-                name,
+                first_name,
+                last_name,
                 email,
-                password: creatHash(password)
+                password: creatHash(password),
+                age,
+                phone,
+                cart:cart._id
             }
             let result = await userService.create(newUser);
             return done(null,result);
@@ -34,15 +41,10 @@ const initializeCustomPassport = () => {
     return done(null,user);
     }))
 
-    // passport.use('google', new GoogleStrategy({
-    //     clientID:
-    // }))
-
-
-    passport.serializeUser((user, done) => { //agarro un usuario y le correspondo una referencia (su id)
+    passport.serializeUser((user, done) => { 
         done(null, user._id);
     })
-    passport.deserializeUser(async(id,done)=>{ //me mandas un id de manera interna en passport y yo obtengo ese usuario
+    passport.deserializeUser(async(id,done)=>{ 
         let result = await userService.findOne({_id:id});
         return done(null,result);
     })

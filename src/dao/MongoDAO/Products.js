@@ -1,48 +1,10 @@
-import mongoose from "mongoose";
+import productModel from "../models/product.dao.js";
 import MongoDBContainer from "./MongoDBContainer.js";
 import { v4 as uuidv4 } from 'uuid';
 
-
-const collection = 'products'
-const productsSchema = mongoose.Schema({
-    code: {
-        type:String,
-        required:true,
-    },
-    name: {
-        type:String,
-        required:true,
-        max:50
-    },
-    description:  {
-        type:String,
-        required:true,
-    },
-    thumbnail:  {
-        type:String,
-        required:true,
-    },
-    category:  {
-        type:String,
-        required:true,
-    },
-    brand:  {
-        type:String,
-        required:true,
-    },
-    price:{
-        type:Number,
-        required:true,
-    },
-    stock: {
-        type:Number,
-        required:true,
-    }
-}, {timestamps:true})
-
 export default class Products extends MongoDBContainer{
     constructor() {
-        super(collection,productsSchema);
+        super(productModel);
     }
 
     save = async(document, filename) => {

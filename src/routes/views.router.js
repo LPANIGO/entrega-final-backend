@@ -5,6 +5,10 @@ const router = Router();
 
 
 router.get('/', (req, res) => {
+    res.render('home');
+});
+
+router.get('/register', async (req, res) => {
     res.render('register');
 });
 
