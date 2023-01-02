@@ -1,18 +1,18 @@
 import {Router} from 'express';
 import services from '../dao/index.js';
+import { privateValidation, publicValidation } from '../middlewares/auth.js';
 
 const router = Router();
 
-
-router.get('/', (req, res) => {
+router.get('/', privateValidation, (req, res) => {
     res.render('home');
 });
 
-router.get('/register', async (req, res) => {
+router.get('/register', publicValidation, async (req, res) => {
     res.render('register');
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', publicValidation, (req, res) => {
     res.render('login');
 });
 
@@ -25,7 +25,7 @@ router.get('/createProduct', (req, res) => {
     res.render('createProduct');
 })
 
-router.get('/products', async (req,res) => {
+router.get('/products', privateValidation, async (req,res) => {
     let products = await services.productsService.getAll();
     res.render('products', {products})
 })

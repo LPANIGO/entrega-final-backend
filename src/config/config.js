@@ -21,5 +21,9 @@ export default {
     jwt: {
         SECRET: process.env.JWT_SECRET || 'patroclo',
         COOKIE: process.env.JWT_COOKIE || 'whiteGandalf'
+    },
+    session: {
+        ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'admin@gmail.com',
+        ADMIN_PWD: process.env.ADMIN_PWD ||12345678
     }
 }

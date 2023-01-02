@@ -16,9 +16,10 @@ const app = express();
 mongoose.set('strictQuery', true);
 const connection = mongoose.connect(`mongodb+srv://${config.mongo.USER}:${config.mongo.PASSWORD}@clusterdeprueba.ozm98v9.mongodb.net/${config.mongo.DB}?retryWrites=true&w=majority`)
 
-console.log(config);
+// console.log(config);
 
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname+'/public'));
 app.use(cookieParser());
 

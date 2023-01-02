@@ -3,6 +3,7 @@ import local from 'passport-local';
 import userService from '../dao/models/user.dao.js';
 import services from '../dao/index.js';
 import { creatHash, isValidPassword } from '../utils.js';
+import config from '../config/config.js';
 
 const LocalStrategy = local.Strategy;
 
@@ -35,9 +36,18 @@ const initializeCustomPassport = () => {
 
     passport.use('login', new LocalStrategy({usernameField:"email", session:false}, async(email,password, done) => {
     if (!email || !password) return done(null, false, {message:"Incomplete values"});
-    let user = await userService.findOne({email:email});
+    if( email===config.session.ADMIN_EMAIL && parseInt(password)===config.session.ADMIN_PWD) {
+        const user = {
+            name:"Admin",
+            role:"administrator",
+            id:'0'
+        }
+        return done(null,user);   
+    }
+
+    const user = await userService.findOne({email:email});
     if(!user) return done(null, false, {message:"Incorrect credentials."})
-    if(!isValidPassword(user,password)) return done(null, false, {message:"Incorrect password"})
+    if(!isValidPassword(user,password)) return done(null, false, {message:"Incorrect password"});
     return done(null,user);
     }))
 
