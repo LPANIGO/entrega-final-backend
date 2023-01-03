@@ -1,11 +1,17 @@
 import {Router} from 'express';
 import services from '../dao/index.js';
-import { privateValidation, publicValidation } from '../middlewares/auth.js';
+import { executePolicies, privateValidation, publicValidation } from '../middlewares/auth.js';
+import { ROUTES } from '../constants/routes.js'
 
 const router = Router();
 
-router.get('/', privateValidation, (req, res) => {
-    res.render('home');
+router.get('/', privateValidation, async (req, res) => {
+    const routes = ROUTES[req.user.role];
+    const products = await services.productsService.getAll();
+    res.render('home', {
+        user:req.user,
+        routes:routes
+    });
 });
 
 router.get('/register', publicValidation, async (req, res) => {
@@ -16,12 +22,7 @@ router.get('/login', publicValidation, (req, res) => {
     res.render('login');
 });
 
-router.get('/data', (req, res) => {
-    if(!req.session.user) return res.render('/login');
-    res.render('data', {user: req.user});
-});
-
-router.get('/createProduct', (req, res) => {
+router.get('/createProduct', privateValidation, executePolicies(['ADMIN']), (req, res) => {
     res.render('createProduct');
 })
 

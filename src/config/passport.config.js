@@ -39,7 +39,7 @@ const initializeCustomPassport = () => {
     if( email===config.session.ADMIN_EMAIL && parseInt(password)===config.session.ADMIN_PWD) {
         const user = {
             name:"Admin",
-            role:"administrator",
+            role:"admin",
             id:'0'
         }
         return done(null,user);   

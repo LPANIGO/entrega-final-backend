@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import config from '../config/config.js';
 import services from '../dao/index.js';
 import { uploader } from '../utils.js';
 
@@ -33,15 +34,16 @@ router.get('/:pid', async (req, res) => {
     
 });
 
-router.post('/',  uploader.single('image'),  async (req, res) => { //ADMIN middleware Ejemplo: { error : -1, descripcion: ruta 'x' método 'y' no autorizada }
+router.post('/',  uploader.single('image'),  async (req, res) => { 
     const {name,description,category,brand,price,stock} = await req.body;
     if(!name||!description||!category||!brand||!price||!stock) return res.status(400).send({error:"Incomplete values"});
+    //let filename = `${req.protocol}://${req.hostname}:${process.env.PORT}/img/${req.file.filename}`;
     let addedProduct = await services.productsService.save(req.body, req.file.filename); 
     res.send({status:"success",payload:addedProduct});
     
 });
 
-router.put('/', authenticationMiddleware, async (req, res) => { //ADMIN middleware
+router.put('/', authenticationMiddleware, async (req, res) => {
     try {
         let updated = await services.productsService.update( req.body ); 
         if(updated.status === "error") return res.send(updated);//fs
@@ -51,7 +53,7 @@ router.put('/', authenticationMiddleware, async (req, res) => { //ADMIN middlewa
     }
 });
 
-router.delete('/:pid', authenticationMiddleware, async (req, res) => {  //ADMIN middleware
+router.delete('/:pid', authenticationMiddleware, async (req, res) => {
     try {
         let newArray = await services.productsService.delete(req.params.pid);
         if(newArray.status === "error") return res.send(newArray);

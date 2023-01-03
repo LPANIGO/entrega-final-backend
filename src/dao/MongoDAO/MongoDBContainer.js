@@ -20,7 +20,7 @@ export default class MongoDBContainer {
     }
 
     update = async (document) => {
-        let result = await this.model.updateOne({"_id": document._id },{$set: {name:document.name}});
+        let result = await this.model.updateOne({"_id": document._id },{$set: {document}});
         return result;
     }
 
