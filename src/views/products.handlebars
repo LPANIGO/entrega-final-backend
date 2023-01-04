@@ -1,3 +1,13 @@
+<div>
+    <h1>Agregar producto:</h1>
+    <form id="addProduct">
+        <label >ID del producto</label>
+        <input name="pid">
+        <label >Cantidad</label>
+        <input name="pQuantity">
+        <input type="submit">
+    </form>
+</div>
 {{#each products}}
         <div class="productCard">
 
@@ -9,3 +19,4 @@
             <img src="https://entrega-final-backend-production.up.railway.app/img/{{this.thumbnail}}" alt="{{this.thumbnail}}">
         </div>
 {{/each}}
+<script src="/js/product.js"></script>

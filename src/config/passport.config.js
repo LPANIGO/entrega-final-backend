@@ -17,7 +17,6 @@ const initializeCustomPassport = () => {
             if(exists) return done(null, false, {message:"User already exists"});
             //Anexar carrito
             const cart = await services.cartsService.save();
-            console.log(cart);
             const newUser = {
                 first_name,
                 last_name,

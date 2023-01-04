@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import services from '../dao/index.js';
+import { executePolicies, privateValidation } from '../middlewares/auth.js';
 
 const router = Router();
 
@@ -14,18 +15,24 @@ router.post('/', async (req, res) => { //creal el carrito con products vacio
     res.send({status:"Success", cartID:createdCart});
 });
 
-router.post('/:cid/products', async (req, res) => { //incorporar el producto a partir del id de producto
-    let {pid, pQuantity} = req.body;
-    if(!pid||!pQuantity) res.status(400).send({message:"Incomplete values."})
-    
-    let stockControl = await services.productsService.checkAndReduceStock(req.body.pid, req.body.pQuantity); //true or false
-    if (stockControl === true) {
-        let addedProduct = await services.cartsService.addProductById(req.params.cid, req.body.pid, req.body.pQuantity)
-        return res.send({status:"Success", payload:addedProduct});
-    } else if (stockControl === false) {
-        return res.status(400).send({message:"Stock insuficiente para el pedido."})
+router.post('/product', privateValidation, executePolicies(['USER']), async (req, res) => { //incorporar el producto a partir del id de producto
+    try {
+        const {pid, pQuantity} = req.body;
+        if(!pid||!pQuantity) res.status(400).send({message:"Incomplete values."})
+        if(parseInt(pQuantity) < 1) return res.status(400).send({message:"Quantity must be higher than 0."})
+
+        let stockControl = await services.productsService.checkAndReduceStock(req.body.pid, req.body.pQuantity); //true or false
+        if (stockControl === true) {
+            let addedProduct = await services.cartsService.addProductById(req.user.cart, req.body.pid, parseInt(req.body.pQuantity))
+            return res.send({status:"Success", payload:addedProduct});
+        } else if (stockControl === false) {
+            return res.status(400).send({message:"Stock insuficiente para el pedido."})
+        }
+        res.send({status:"error",payload:"error"});
+    } catch (error) {
+        res.send({status:"error",payload:error});
     }
-    res.send({status:"error",payload:"error"});
+    
 });
 
 router.delete('/:cid', async (req, res) => { //vaciar el carrito y lo elimina

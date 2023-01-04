@@ -2,3 +2,15 @@
 .productCard img {
     width: 20vw;
 }
+
+#img {
+    width: 8vw;
+}
+
+td {
+    padding: 8px;
+}
+
+th {
+    padding: 8px;
+}

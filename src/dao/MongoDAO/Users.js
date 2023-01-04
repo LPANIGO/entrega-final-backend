@@ -8,7 +8,7 @@ export default class UsersDao {
     }
 
     getById = async(_id) => {
-        let result = await userModel.findById(_id);
+        let result = await userModel.findById(_id).lean();
         return result;
     }
 

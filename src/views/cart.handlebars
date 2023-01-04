@@ -1,0 +1,23 @@
+<table class="table ">
+    <thead>
+    <tr class="table-light">
+        <th scope="col">#</th>
+        <th scope="col">Imagen</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Precio unitario</th>
+        <th scope="col">Cantidad</th>
+    </tr>
+    </thead>
+    
+    <tbody>
+        {{#each cart.products}}
+        <tr> 
+            <th scope="row"> {{@index}}</th> 
+            <td><img src="https://entrega-final-backend-production.up.railway.app/img/{{product.thumbnail}}" id="img" alt=""></td> 
+            <td>{{product.name}}</td> 
+            <td>${{product.price}}</td> 
+            <td>{{quantity}}</td> 
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
