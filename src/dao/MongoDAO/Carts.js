@@ -13,6 +13,11 @@ export default class Carts extends MongoDBContainer{
         return result;
     }
 
+    getProducts = async (id) => {
+        let result = await this.model.find({_id:id},{_id:0, 'products.product':1, 'products.quantity':1})
+        return result; 
+    }
+
     save = async() => {
         let result = this.model.create({products:[]});
         return result;

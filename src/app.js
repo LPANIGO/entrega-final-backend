@@ -5,6 +5,7 @@ import viewsRouter from './routes/views.router.js';
 import sessionsRouter from './routes/session.router.js';
 import productsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
+import purchasesRouter from './routes/purchase.router.js'
 import __dirname from './utils.js';
 import mongoose from 'mongoose';
 import initializeCustomPassport from './config/passport.config.js'
@@ -34,6 +35,7 @@ app.use('/', viewsRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
+app.use('/api/purchases', purchasesRouter);
 //ver plantilla front ingresar productos en final de clase 12 y clase motor de plantillas.
 
 const PORT = process.env.PORT || config.app.PORT;

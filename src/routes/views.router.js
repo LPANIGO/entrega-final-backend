@@ -33,8 +33,6 @@ router.get('/products', privateValidation, async (req,res) => {
 
 router.get('/cart', privateValidation, executePolicies(['USER']), async (req, res) => {
     let cart = await services.cartsService.getByIdAndPopulate(req.user.cart);
-    console.log(cart);
-    console.log(req.user)
     res.render('cart', {cart})
 });
 

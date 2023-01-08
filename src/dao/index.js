@@ -2,6 +2,7 @@ const persistence = "MONGO";
 let productsService;
 let cartsService;
 let usersService;
+let purchasesService;
 
 switch(persistence) {
     case "MONGO":
@@ -11,6 +12,8 @@ switch(persistence) {
         cartsService =  new MongoCarts();
         const {default:MongoUsers} = await import('./MongoDAO/Users.js');
         usersService = new MongoUsers();
+        const {default:MongoPurchases} = await import('./MongoDAO/Purchases.js');
+        purchasesService = new MongoPurchases();
         break;
     case "FILESYSTEM":
         const {default:FileProd} = await import('./FilesDAO/Products.js');
@@ -23,7 +26,8 @@ switch(persistence) {
 const services = {
     productsService,
     cartsService,
-    usersService
+    usersService,
+    purchasesService
 }
 
 export default services;

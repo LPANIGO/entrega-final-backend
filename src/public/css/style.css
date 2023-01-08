@@ -14,3 +14,27 @@ td {
 th {
     padding: 8px;
 }
+
+.productPanel {
+    padding-top: 10vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.productCard {
+    width: 20vw;
+    /* height: 16vw; */
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.productCard > img {
+    width: 90%;
+    object-fit: cover;
+}
+
+#purchaseForm {
+    padding-top: 5vw;
+    margin-left: 40vw;
+}
