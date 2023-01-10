@@ -8,7 +8,7 @@ const router = Router();
 
 
 router.post('/register', publicValidation, passport.authenticate('register', {session:false}),  async (req,res) => {
-    res.send({status:"Success", payload:req.user._id});
+    res.send({status:"success", payload:req.user._id});
 })
 
 router.post('/login', passport.authenticate('login', {session:false}), async (req, res) => {
@@ -39,7 +39,7 @@ router.get('/current', async (req, res) => {
         const token = req.cookies[config.jwt.COOKIE];
         if(!token) return res.redirect('/login'); //checkeo si exite la cookie. Pero el token puede expirar aun con la cookie activa.
         const user = jwt.verify(token, config.jwt.SECRET);
-        res.send({status:"Success", user});
+        res.send({status:"success", user});
     } catch (error) {
         if(error.expiredAt) { //El token expiró
             res.send({status:"error", error:"token expirado"});
