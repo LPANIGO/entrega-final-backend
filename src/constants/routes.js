@@ -11,6 +11,10 @@ export const ROUTES = {
         {
             route:'/cart',
             label:'Carrito'
+        },
+        {
+            route:'/purchases',
+            label:'Compras finalizadas'
         }
     ],
     admin:[
