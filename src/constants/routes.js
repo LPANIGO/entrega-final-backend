@@ -23,8 +23,12 @@ export const ROUTES = {
             label:'Productos'
         },
         {
-            route:'/createProduct',
-            label:'Crear producto'
+            route:'/updateProduct',
+            label:'Actualizar producto'
+        },
+        {
+            route:'/dltProduct',
+            label:'Eliminar producto'
         },
         {
             route:'/dltProduct',

@@ -6,7 +6,6 @@ import { publicValidation } from '../middlewares/auth.js';
 
 const router = Router();
 
-
 router.post('/register', publicValidation, passport.authenticate('register', {session:false}),  async (req,res) => {
     res.send({status:"success", payload:req.user._id});
 })
